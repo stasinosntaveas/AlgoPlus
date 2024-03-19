@@ -26,6 +26,22 @@ public:
       }
     }
   }
+  
+  std::shared_ptr<node> clone(std::shared_ptr<node>& root) {
+    if (root) return new node(root->info, clone(root->left), clone(root->right));
+    return nullptr;
+  }
+  /**
+   * @brief Construct a new avl_tree object
+   *
+   * @param t the avl_tree we want to copy
+   */
+  avl_tree(const avl_tree &t) {
+    
+    root = clone(t.root);
+    __size = t.__size;
+  }
+
   ~avl_tree() noexcept {}
 
   /**
@@ -154,6 +170,7 @@ private:
     std::shared_ptr<node> left;
     std::shared_ptr<node> right;
     node(T key) : info(key), left(nullptr), right(nullptr), height(0) {}
+    node(T key, node left, node right) : info(key), left(left), right(right) {}
   } node;
 
   std::shared_ptr<node> root;
